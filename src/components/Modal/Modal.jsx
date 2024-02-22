@@ -17,13 +17,19 @@ class Modal extends Component {
     }
   };
 
+  handleOnClick = e => {
+    if (e.currentTarget === e.target) {
+      this.props.onClose();
+    }
+  };
+
   render() {
     return (
-      <Overlay>
+      <Overlay onClick={this.handleOnClick}>
         <ModalWindow>
           <GalleryItemImage
             src={this.props.largeImage}
-            style={{ height: '70%' }}
+            style={{ height: '70%', cursor: 'default', transform: 'scale(1)' }}
           />
         </ModalWindow>
       </Overlay>
