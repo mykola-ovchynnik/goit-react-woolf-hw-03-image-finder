@@ -5,7 +5,6 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import LoadMoreButton from './Button/Button';
 import Modal from './Modal/Modal';
 import { serviceGetImages } from 'api/api';
-import { handleError, validateInput } from 'helpers/helpers';
 import { Grid } from './Loader/Loader';
 
 class App extends Component {
@@ -46,31 +45,21 @@ class App extends Component {
     }
   };
 
-  onSubmit = e => {
-    e.preventDefault();
-
-    try {
-      const query = validateInput(e.target.query.value);
-      this.setState({
-        query: query,
-        images: [],
-        page: 1,
-        loadMore: false,
-      });
-    } catch (error) {
-      handleError(error);
-    }
+  onSubmit = query => {
+    this.setState({
+      query: query,
+      images: [],
+      page: 1,
+      loadMore: false,
+    });
   };
 
   onLoadMore = () => {
     this.setState(prev => ({ page: prev.page + 1 }));
   };
 
-  onClick = e => {
-    if (e.currentTarget === e.target) {
-      return;
-    }
-    this.setState({ largeImage: e.target.dataset.source, isShowModal: true });
+  onClick = largeImage => {
+    this.setState({ largeImage, isShowModal: true });
   };
 
   closeModal = () => {

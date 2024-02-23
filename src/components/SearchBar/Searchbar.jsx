@@ -1,3 +1,4 @@
+import { Component } from 'react';
 import {
   Header,
   SearchForm,
@@ -5,25 +6,39 @@ import {
   SearchButtonLabel,
   SearchInput,
 } from './Searchbar.styled';
+import { handleError, validateInput } from 'helpers/helpers';
 
-const SearchBarHeader = ({ onSubmit }) => {
-  return (
-    <Header>
-      <SearchForm onSubmit={onSubmit}>
-        <SearchButton type="submit">
-          <SearchButtonLabel>Search</SearchButtonLabel>
-        </SearchButton>
+class SearchBarHeader extends Component {
+  onSubmit = e => {
+    e.preventDefault();
 
-        <SearchInput
-          name="query"
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-        />
-      </SearchForm>
-    </Header>
-  );
-};
+    try {
+      const query = validateInput(e.target.query.value);
+      this.props.onSubmit(query);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  render() {
+    return (
+      <Header>
+        <SearchForm onSubmit={this.onSubmit}>
+          <SearchButton type="submit">
+            <SearchButtonLabel>Search</SearchButtonLabel>
+          </SearchButton>
+
+          <SearchInput
+            name="query"
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+          />
+        </SearchForm>
+      </Header>
+    );
+  }
+}
 
 export default SearchBarHeader;
